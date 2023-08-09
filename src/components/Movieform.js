@@ -7,11 +7,28 @@ function Movieform({objectData}) {
     duration: ''
   })
 
+  const [errornotification, setErrornotification] = useState({
+    status: false,
+    values: ''
+  })
+
   const handleSubmit = () =>{
-    objectData(dataObjs)
+    if( dataObjs.duration.substring(dataObjs.duration.length - 1) !== 'm' && dataObjs.duration.substring(dataObjs.duration.length - 1) !== 'h'){
+      console.log('Please specify the time in hours or minutes (e.g. 2.5h or 150m)')
+      setErrornotification({...errornotification, status:true, values: 'Please specify the time in hours or minutes (e.g. 2.5h or 150m'})
+    } else if(dataObjs.name === ''){
+      console.log('Please Provide the name of movie')
+      setErrornotification({...errornotification, status:true, values: 'Please Provide the name of movie'})
+    } else if(dataObjs.ratings > 100){
+      console.log('Please Provide rating Less than or equal to 100')
+      setErrornotification({...errornotification, status:true, values: 'Please Provide rating Less than or equal to 100'})
+    } else{
+      objectData(dataObjs)
+    }
   }
 
   const handleChange = (e) =>{
+    setErrornotification(false)
     const {id, value} = e.target
     if(id === 'ratings'){
       setDataObjs({...dataObjs, [id]: value})
@@ -58,12 +75,12 @@ function Movieform({objectData}) {
             />
           </div>
           {/* Use this div when time format is invalid */}
-          {/* <div 
+          {errornotification.status && <div 
             className='alert error mb-30'
             data-testid='alert'
           >
-            Please specify time in hours or minutes (e.g. 2.5h or 150m)
-          </div>  */}
+            {errornotification.values}
+          </div> }
           <div className='layout-row justify-content-end'>
             <button 
               type='submit'
