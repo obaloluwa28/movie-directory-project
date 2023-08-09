@@ -1,6 +1,24 @@
-import React from 'react'
+import React,{useState} from 'react'
 
-function Movieform() {
+function Movieform({objectData}) {
+  const [dataObjs, setDataObjs] = useState({
+    name: '',
+    ratings: 0,
+    duration: ''
+  })
+
+  const handleSubmit = () =>{
+    objectData(dataObjs)
+  }
+
+  const handleChange = (e) =>{
+    const {id, value} = e.target
+    if(id === 'ratings'){
+      setDataObjs({...dataObjs, [id]: value})
+    } else{
+      setDataObjs({...dataObjs, [id]: value})
+    }
+  }
 
   return (
     <section>
@@ -13,6 +31,8 @@ function Movieform() {
               id='name'
               placeholder='Enter Movie Name'
               data-testid='nameInput'
+              value={dataObjs.name}
+              onChange={handleChange}
             />
           </div>
           <div className='layout-column mb-15'>
@@ -22,6 +42,8 @@ function Movieform() {
               id='ratings'
               placeholder='Enter Rating on a scale of 1 to 100'
               data-testid='ratingsInput'
+              value={dataObjs.ratings}
+              onChange={handleChange}
             />
           </div>
           <div className='layout-column mb-30'>
@@ -31,6 +53,8 @@ function Movieform() {
               id='duration'
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
+              value={dataObjs.duration}
+              onChange={handleChange}
             />
           </div>
           {/* Use this div when time format is invalid */}
@@ -45,6 +69,7 @@ function Movieform() {
               type='submit'
               className='mx-0'
               data-testid='addButton'
+              onClick={handleSubmit}
             >
               Add Movie
             </button>
